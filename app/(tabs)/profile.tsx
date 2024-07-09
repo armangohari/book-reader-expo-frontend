@@ -24,28 +24,25 @@ export default function Profile() {
   const getUser = async () => {
     const userId = authContext.authState?.userId;
     await axiosBase
-    // .get(`/users/${userId}`, )
-    .get(`/users/1`, )
+      .get(`/users/${userId}`)
       .then((res) => {
-        console.log(res) // !delete
-        const fetchedUser = res?.data;
-        console.log(fetchedUser); // !delete
+        const user = res?.data?.user;
         setUserInfoList([
           {
             label: "Username",
-            value: "@" + fetchedUser.username,
+            value: "@" + user.username,
           },
           {
             label: "First Name",
-            value: fetchedUser.firstName,
+            value: user.firstName,
           },
           {
             label: "Last Name",
-            value: fetchedUser.lastName,
+            value: user.lastName,
           },
           {
             label: "Role",
-            value: fetchedUser.role,
+            value: user.role,
           },
         ]);
       })

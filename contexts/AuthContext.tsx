@@ -52,7 +52,7 @@ export function AuthProvider({ children }: PropsWithChildren<{}>) {
 
   useEffect(() => {
     checkToken();
-  }, [authState.authenticated]);
+  }, []);
 
   const checkToken = async () => {
     const token = await SecureStore.getItemAsync("token");
