@@ -24,10 +24,12 @@ export default function Profile() {
   const getUser = async () => {
     const userId = authContext.authState?.userId;
     await axiosBase
-      .get(`/users/${userId}`)
+    // .get(`/users/${userId}`, )
+    .get(`/users/1`, )
       .then((res) => {
-        const fetchedUser = res?.data?.user;
-        console.log(fetchedUser);
+        console.log(res) // !delete
+        const fetchedUser = res?.data;
+        console.log(fetchedUser); // !delete
         setUserInfoList([
           {
             label: "Username",

@@ -5,21 +5,10 @@ import { PropsWithChildren, createContext, useEffect, useState } from "react";
 import { ToastAndroid } from "react-native";
 import { RootSiblingParent } from "react-native-root-siblings";
 
-export type AuthProps = {
-  authState?: {
-    userId: number | null;
-    token: string | null;
-    authenticated: boolean | null;
-  };
-  register?: (credentials: {
-    username: string;
-    firstName: string;
-    lastName: string;
-    password: string;
-    role: "admin" | "user";
-  }) => Promise<any>;
-  login?: (credentials: { username: string; password: string }) => Promise<any>;
-  logout?: () => Promise<any>;
+type AuthStateType = {
+  userId: number | null;
+  token: string | null;
+  authenticated: boolean | null;
 };
 
 type RegisterType = {
@@ -35,11 +24,18 @@ type LoginType = {
   password: string;
 };
 
+export type AuthProps = {
+  authState: AuthStateType;
+  register: (credentials: RegisterType) => Promise<any>;
+  login: (credentials: LoginType) => Promise<any>;
+  logout: () => Promise<any>;
+};
+
 export const AuthContext = createContext<AuthProps>({
   authState: {
     userId: null,
-    token: null,
     authenticated: null,
+    token: null,
   },
   register: () => new Promise(async () => {}),
   login: () => new Promise(async () => {}),
@@ -48,21 +44,15 @@ export const AuthContext = createContext<AuthProps>({
 
 export function AuthProvider({ children }: PropsWithChildren<{}>) {
   const router = useRouter();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [authState, setAuthState] = useState<{
-    userId: number | null;
-    token: string | null;
-    authenticated: boolean | null;
-  }>({
+  const [authState, setAuthState] = useState<AuthStateType>({
     userId: null,
-    token: null,
     authenticated: null,
+    token: null,
   });
 
   useEffect(() => {
     checkToken();
-    console.log(authState); // !delete
-  }, []);
+  }, [authState.authenticated]);
 
   const checkToken = async () => {
     const token = await SecureStore.getItemAsync("token");
@@ -79,8 +69,8 @@ export function AuthProvider({ children }: PropsWithChildren<{}>) {
           ] = `Bearer ${token}`;
           setAuthState({
             userId: res?.data?.userId,
-            token: token,
             authenticated: true,
+            token: token,
           });
         }
       })
@@ -129,14 +119,11 @@ export function AuthProvider({ children }: PropsWithChildren<{}>) {
       .then(async (res) => {
         if (res?.status === 200) {
           const token = res?.data?.token;
-          console.log(token); // !delete
           const userId = res?.data?.userId;
-          console.log(userId); // !delete
-          setAuthState({ userId, token, authenticated: true });
+          setAuthState(() => ({ userId, token, authenticated: true }));
           await SecureStore.setItemAsync("token", token);
           router.replace("/(tabs)/");
           showToast(`${res?.data?.message}\nWelcome ${username}`);
-          setIsLoggedIn(true);
         }
       })
       .catch((err) => {
@@ -146,10 +133,9 @@ export function AuthProvider({ children }: PropsWithChildren<{}>) {
 
   const logout = async () => {
     setAuthState({ userId: null, token: null, authenticated: false });
-    await SecureStore.deleteItemAsync("token");
     router.replace("/(auth)/login");
     showToast("Please Login / Sign up to continue!");
-    setIsLoggedIn(false);
+    await SecureStore.deleteItemAsync("token");
   };
 
   const authValue: AuthProps = {
