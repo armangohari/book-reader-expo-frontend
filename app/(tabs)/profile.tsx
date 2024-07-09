@@ -1,5 +1,5 @@
 import useAuth from "@/hooks/useAuth";
-import axiosBase from "@/services/axiosBase";
+import { axiosBase } from "@/services/axiosBase";
 import React, { useEffect, useState } from "react";
 import { Pressable, Text, View } from "react-native";
 
@@ -11,7 +11,7 @@ type UserType = {
   role: "admin" | "user" | null;
 };
 
-type UserInfoListType = { label: string; value: string }[];
+type UserInfoListType = UserInfoCardProps[];
 
 export default function Profile() {
   const authContext = useAuth();
@@ -48,7 +48,10 @@ export default function Profile() {
         ]);
       })
       .catch((err) => {
-        console.error("Error in fetching user data, Error:", err);
+        console.error(
+          "Error in fetching user data, Error:",
+          err?.response?.data
+        );
       });
   };
 

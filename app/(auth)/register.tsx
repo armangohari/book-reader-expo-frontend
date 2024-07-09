@@ -49,6 +49,7 @@ export default function Register() {
 
       {/* Register Form */}
       <View className="grid gap-2 mb-8">
+        {/* Username */}
         <View className="w-[70vw]">
           <Text className="mb-1 text-lg font-light">Username</Text>
           <TextInput
@@ -58,6 +59,7 @@ export default function Register() {
             onChangeText={(text) => handleInputChange("username", text)}
           />
         </View>
+        {/* First Name */}
         <View className="w-[70vw]">
           <Text className="mb-1 text-lg font-light">First Name</Text>
           <TextInput
@@ -67,6 +69,7 @@ export default function Register() {
             onChangeText={(text) => handleInputChange("firstName", text)}
           />
         </View>
+        {/* Last Name */}
         <View className="w-[70vw]">
           <Text className="mb-1 text-lg font-light">Last Name</Text>
           <TextInput
@@ -76,6 +79,7 @@ export default function Register() {
             onChangeText={(text) => handleInputChange("lastName", text)}
           />
         </View>
+        {/* Password */}
         <View className="w-[70vw]">
           <Text className="mb-1 text-lg font-light">Password</Text>
           <TextInput
@@ -84,6 +88,7 @@ export default function Register() {
             value={formState.password}
             onChangeText={(text) => handleInputChange("password", text)}
             secureTextEntry={!isPassVisible}
+            autoCapitalize="none"
           />
           <Pressable
             className="absolute right-0 bottom-0 p-3"

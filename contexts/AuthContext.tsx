@@ -1,13 +1,7 @@
-import axiosBase from "@/services/axiosBase";
+import { axiosBase } from "@/services/axiosBase";
 import { useRouter } from "expo-router";
 import * as SecureStore from "expo-secure-store";
-import {
-  PropsWithChildren,
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { PropsWithChildren, createContext, useEffect, useState } from "react";
 import { ToastAndroid } from "react-native";
 import { RootSiblingParent } from "react-native-root-siblings";
 
@@ -54,6 +48,7 @@ export const AuthContext = createContext<AuthProps>({
 
 export function AuthProvider({ children }: PropsWithChildren<{}>) {
   const router = useRouter();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [authState, setAuthState] = useState<{
     userId: number | null;
     token: string | null;
@@ -66,6 +61,7 @@ export function AuthProvider({ children }: PropsWithChildren<{}>) {
 
   useEffect(() => {
     checkToken();
+    console.log(authState); // !delete
   }, []);
 
   const checkToken = async () => {
@@ -77,7 +73,7 @@ export function AuthProvider({ children }: PropsWithChildren<{}>) {
         { headers: { Authorization: `Bearer ${token}` } }
       )
       .then((res) => {
-        if (res?.status == 200) {
+        if (res?.status === 200) {
           axiosBase.defaults.headers.common[
             "Authorization"
           ] = `Bearer ${token}`;
@@ -86,7 +82,6 @@ export function AuthProvider({ children }: PropsWithChildren<{}>) {
             token: token,
             authenticated: true,
           });
-          router.replace("/(tabs)/");
         }
       })
       .catch(() => {
@@ -98,7 +93,7 @@ export function AuthProvider({ children }: PropsWithChildren<{}>) {
     if (message) {
       ToastAndroid.show(message, ToastAndroid.SHORT);
     } else {
-      console.error("Attempted to show a toast with an empty or null message");
+      console.log("Attempted to show a toast with an empty or null message");
     }
   };
 
@@ -133,12 +128,15 @@ export function AuthProvider({ children }: PropsWithChildren<{}>) {
       .post("/auth/login", { username, password })
       .then(async (res) => {
         if (res?.status === 200) {
-          showToast(`${res?.data?.message}\nWelcome ${username}`);
-          router.replace("/(tabs)/");
           const token = res?.data?.token;
+          console.log(token); // !delete
           const userId = res?.data?.userId;
+          console.log(userId); // !delete
           setAuthState({ userId, token, authenticated: true });
           await SecureStore.setItemAsync("token", token);
+          router.replace("/(tabs)/");
+          showToast(`${res?.data?.message}\nWelcome ${username}`);
+          setIsLoggedIn(true);
         }
       })
       .catch((err) => {
@@ -147,10 +145,11 @@ export function AuthProvider({ children }: PropsWithChildren<{}>) {
   };
 
   const logout = async () => {
-    router.replace("/(auth)/login");
-    showToast("Please Login / Sign up to continue!");
     setAuthState({ userId: null, token: null, authenticated: false });
     await SecureStore.deleteItemAsync("token");
+    router.replace("/(auth)/login");
+    showToast("Please Login / Sign up to continue!");
+    setIsLoggedIn(false);
   };
 
   const authValue: AuthProps = {
@@ -166,7 +165,3 @@ export function AuthProvider({ children }: PropsWithChildren<{}>) {
     </RootSiblingParent>
   );
 }
-
-export const useAuth = () => {
-  return useContext<AuthProps>(AuthContext);
-};

@@ -1,17 +1,10 @@
-import axiosBase from "@/services/axiosBase";
+import { axiosBase } from "@/services/axiosBase";
 import { useEffect, useState } from "react";
-import {
-  Alert,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { Alert, Pressable, ScrollView, Text, View } from "react-native";
 // import { WebView } from "react-native-webview";
 import { API_BASE_URL } from "@/config/apiConfig";
-import * as WebBrowser from "expo-web-browser";
 import * as FileSystem from "expo-file-system";
+import * as WebBrowser from "expo-web-browser";
 
 type Book = {
   id: number;
@@ -49,7 +42,6 @@ export default function Home() {
       .get("/books/all")
       .then((res) => {
         if (res?.status === 200) {
-          console.log(res.data);
           setBooks(res?.data);
         }
       })

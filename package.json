@@ -1,7 +1,7 @@
 {
   "name": "book-reader-expo-frontend",
   "main": "expo-router/entry",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
@@ -24,6 +24,7 @@
     "expo-status-bar": "~1.12.1",
     "expo-system-ui": "~3.0.6",
     "expo-web-browser": "~13.0.3",
+    "glob": "^11.0.0",
     "nativewind": "^2.0.11",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -34,13 +35,25 @@
     "react-native-root-toast": "^3.6.0",
     "react-native-safe-area-context": "^4.10.1",
     "react-native-screens": "^3.31.1",
-    "react-native-web": "~0.19.6"
+    "react-native-web": "~0.19.6",
+    "rimraf": "^6.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
+    "@babel/plugin-transform-async-generator-functions": "^7.24.7",
+    "@babel/plugin-transform-class-properties": "^7.24.7",
+    "@babel/plugin-transform-logical-assignment-operators": "^7.24.7",
+    "@babel/plugin-transform-nullish-coalescing-operator": "^7.24.7",
+    "@babel/plugin-transform-numeric-separator": "^7.24.7",
+    "@babel/plugin-transform-object-rest-spread": "^7.24.7",
+    "@babel/plugin-transform-optional-catch-binding": "^7.24.7",
+    "@babel/plugin-transform-optional-chaining": "^7.24.7",
     "@types/react": "~18.2.45",
     "autoprefixer": "^10.4.19",
+    "inflight": "^1.0.6",
+    "osenv": "^0.1.5",
     "postcss": "^8.4.38",
+    "query-string": "^9.0.0",
     "tailwindcss": "3.3.2",
     "typescript": "~5.3.3"
   },

@@ -1,4 +1,4 @@
-import { useAuth } from "@/contexts/AuthContext";
+import useAuth from "@/hooks/useAuth";
 import { Ionicons } from "@expo/vector-icons";
 import { Link } from "expo-router";
 import { useState } from "react";
@@ -43,6 +43,7 @@ export default function Login() {
 
       {/* Login Form */}
       <View className="grid gap-2 mb-8">
+        {/* Username */}
         <View className="w-[70vw]">
           <Text className="mb-1 text-lg font-light">Username</Text>
           <TextInput
@@ -52,6 +53,7 @@ export default function Login() {
             onChangeText={(text) => handleInputChange("username", text)}
           />
         </View>
+        {/* Password */}
         <View className="w-[70vw] relative">
           <Text className="mb-1 text-lg font-light">Password</Text>
           <TextInput
@@ -60,6 +62,7 @@ export default function Login() {
             value={formState.password}
             onChangeText={(text) => handleInputChange("password", text)}
             secureTextEntry={!isPassVisible}
+            autoCapitalize="none"
           />
           <Pressable
             className="absolute right-0 bottom-0 p-3"
