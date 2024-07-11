@@ -47,6 +47,11 @@ export default function Add() {
   const handleAddBook = async () => {
     const { title, description, pdf } = formState;
 
+    if (!title || !description || !pdf) {
+      showToast("All fields are required!");
+      return;
+    }
+
     const formData = new FormData();
     const uuid = timestampPhrase(hyphenizePhrase(capitalizePhrase(title)));
     formData.append("uuid", uuid);
@@ -55,8 +60,8 @@ export default function Add() {
     formData.append("uploadedBy", authContext.authState.username as string);
     formData.append("pdf", {
       name: `${uuid}.pdf`,
-      uri: pdf.uri,
-      type: pdf.mimeType,
+      uri: pdf?.uri,
+      type: pdf?.mimeType,
     } as any);
 
     setLoading(true);
@@ -68,8 +73,14 @@ export default function Add() {
         },
       })
       .then((res) => {
-        console.log(res); // ! delete
         if (res?.status === 201) {
+          setFormState({
+            uuid: "",
+            title: "",
+            description: "",
+            uploadedBy: "",
+            pdf: null,
+          });
           router.replace("/(tabs)/");
           showToast("Book added successfully!");
         }
