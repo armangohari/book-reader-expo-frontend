@@ -1,12 +1,13 @@
 import { axiosBase } from "@/services/axiosBase";
+import { showToast } from "@/utils/helpers";
 import { useRouter } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 import { PropsWithChildren, createContext, useEffect, useState } from "react";
-import { ToastAndroid } from "react-native";
 import { RootSiblingParent } from "react-native-root-siblings";
 
 type AuthStateType = {
   userId: number | null;
+  username: string | null;
   token: string | null;
   authenticated: boolean | null;
 };
@@ -34,6 +35,7 @@ export type AuthProps = {
 export const AuthContext = createContext<AuthProps>({
   authState: {
     userId: null,
+    username: "",
     authenticated: null,
     token: null,
   },
@@ -46,13 +48,14 @@ export function AuthProvider({ children }: PropsWithChildren<{}>) {
   const router = useRouter();
   const [authState, setAuthState] = useState<AuthStateType>({
     userId: null,
+    username: null,
     authenticated: null,
     token: null,
   });
 
   useEffect(() => {
     checkToken();
-  }, []);
+  }, [authState.authenticated]);
 
   const checkToken = async () => {
     const token = await SecureStore.getItemAsync("token");
@@ -67,24 +70,17 @@ export function AuthProvider({ children }: PropsWithChildren<{}>) {
           axiosBase.defaults.headers.common[
             "Authorization"
           ] = `Bearer ${token}`;
-          setAuthState({
+          setAuthState(() => ({
             userId: res?.data?.userId,
+            username: res?.data?.username,
             authenticated: true,
             token: token,
-          });
+          }));
         }
       })
       .catch(() => {
         logout();
       });
-  };
-
-  const showToast = (message: string) => {
-    if (message) {
-      ToastAndroid.show(message, ToastAndroid.SHORT);
-    } else {
-      console.log("Attempted to show a toast with an empty or null message");
-    }
   };
 
   const register = async ({
@@ -120,7 +116,13 @@ export function AuthProvider({ children }: PropsWithChildren<{}>) {
         if (res?.status === 200) {
           const token = res?.data?.token;
           const userId = res?.data?.userId;
-          setAuthState(() => ({ userId, token, authenticated: true }));
+          const username = res?.data?.username;
+          setAuthState(() => ({
+            userId,
+            username,
+            token,
+            authenticated: true,
+          }));
           await SecureStore.setItemAsync("token", token);
           router.replace("/(tabs)/");
           showToast(`${res?.data?.message}\nWelcome ${username}`);
@@ -132,7 +134,12 @@ export function AuthProvider({ children }: PropsWithChildren<{}>) {
   };
 
   const logout = async () => {
-    setAuthState({ userId: null, token: null, authenticated: false });
+    setAuthState({
+      userId: null,
+      username: null,
+      token: null,
+      authenticated: false,
+    });
     router.replace("/(auth)/login");
     showToast("Please Login / Sign up to continue!");
     await SecureStore.deleteItemAsync("token");

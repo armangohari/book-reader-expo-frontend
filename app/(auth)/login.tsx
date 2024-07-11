@@ -35,7 +35,7 @@ export default function Login() {
   };
 
   return (
-    <View className="flex-1 gap-2 justify-center items-center">
+    <View className="flex-1 gap-2 justify-start items-center mt-16">
       {/* Title */}
       <View className="mb-10">
         <Text className="text-4xl font-bold">Login</Text>
@@ -48,7 +48,7 @@ export default function Login() {
           <Text className="mb-1 text-lg font-light">Username</Text>
           <TextInput
             id="login-username"
-            className="border-1 py-2 px-3 rounded-xl w-full border focus:border-primary focus:border-2"
+            className="py-2 px-3 rounded-xl w-full bg-white focus:border-primary focus:border-2"
             value={formState.username}
             onChangeText={(text) => handleInputChange("username", text)}
           />
@@ -57,7 +57,7 @@ export default function Login() {
         <View className="w-[70vw] relative">
           <Text className="mb-1 text-lg font-light">Password</Text>
           <TextInput
-            className="border-1 py-2 px-3 pr-11 rounded-xl w-full border focus:border-primary focus:border-2"
+            className="py-2 px-3 pr-11 rounded-xl w-full bg-white focus:border-primary focus:border-2"
             id="login-password"
             value={formState.password}
             onChangeText={(text) => handleInputChange("password", text)}
@@ -71,7 +71,7 @@ export default function Login() {
             <Ionicons
               name={isPassVisible ? "eye-off" : "eye"}
               size={24}
-              color="#bbb"
+              color="#ccc"
             />
           </Pressable>
         </View>

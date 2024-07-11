@@ -41,10 +41,10 @@ export default function Register() {
   };
 
   return (
-    <View className="flex-1 gap-2 justify-center items-center">
+    <View className="flex-1 gap-2 justify-start mt-16 items-center">
       {/* Title */}
       <View className="mb-10">
-        <Text className="text-4xl font-bold">Register</Text>
+        <Text className="text-3xl font-bold">Register</Text>
       </View>
 
       {/* Register Form */}
@@ -54,7 +54,7 @@ export default function Register() {
           <Text className="mb-1 text-lg font-light">Username</Text>
           <TextInput
             id="register-username"
-            className="border-1 py-2 px-3 rounded-xl w-full border focus:border-primary focus:border-2"
+            className="bg-white py-2 px-3 rounded-xl w-full focus:border-primary focus:border-2"
             value={formState.username}
             onChangeText={(text) => handleInputChange("username", text)}
           />
@@ -64,7 +64,7 @@ export default function Register() {
           <Text className="mb-1 text-lg font-light">First Name</Text>
           <TextInput
             id="firstName"
-            className="border-1 py-2 px-3 rounded-xl w-full border focus:border-primary focus:border-2"
+            className="bg-white py-2 px-3 rounded-xl w-full focus:border-primary focus:border-2"
             value={formState.firstName}
             onChangeText={(text) => handleInputChange("firstName", text)}
           />
@@ -74,7 +74,7 @@ export default function Register() {
           <Text className="mb-1 text-lg font-light">Last Name</Text>
           <TextInput
             id="lastName"
-            className="border-1 py-2 px-3 rounded-xl w-full border focus:border-primary focus:border-2"
+            className="bg-white py-2 px-3 rounded-xl w-full focus:border-primary focus:border-2"
             value={formState.lastName}
             onChangeText={(text) => handleInputChange("lastName", text)}
           />
@@ -83,7 +83,7 @@ export default function Register() {
         <View className="w-[70vw]">
           <Text className="mb-1 text-lg font-light">Password</Text>
           <TextInput
-            className="border-1 py-2 px-3 pr-11 rounded-xl w-full border focus:border-primary focus:border-2"
+            className="bg-white py-2 px-3 pr-11 rounded-xl w-full focus:border-primary focus:border-2"
             id="register-password"
             value={formState.password}
             onChangeText={(text) => handleInputChange("password", text)}
@@ -97,7 +97,7 @@ export default function Register() {
             <Ionicons
               name={isPassVisible ? "eye-off" : "eye"}
               size={24}
-              color="#bbb"
+              color="#ccc"
             />
           </Pressable>
         </View>

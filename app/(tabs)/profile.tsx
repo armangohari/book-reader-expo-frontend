@@ -61,16 +61,19 @@ export default function Profile() {
   };
 
   return (
-    <View className="flex-1 justify-center items-center">
+    <View className="flex-1 gap-2 mt-6 justify-start items-center">
+      {/* Header */}
+      <Text className="text-3xl font-bold text-center mb-6">Profile</Text>
+
       {/* User Info */}
-      <View className="mb-5">
+      <View>
         {userInfoList.map(({ label, value }) => (
           <UserInfoCard key={label} label={label} value={value} />
         ))}
       </View>
 
       {/* Logout Button */}
-      <Pressable className="px-6 py-3 bg-primary rounded-xl  min-w-[40vw]">
+      <Pressable className="px-6 py-3 bg-primary rounded-xl min-w-[40vw]">
         <Text className="text-white text-xl text-center" onPress={handleLogout}>
           Logout
         </Text>
@@ -86,8 +89,8 @@ type UserInfoCardProps = {
 
 function UserInfoCard({ label, value }: UserInfoCardProps) {
   return (
-    <View className="flex-1 min-w-[40vw] rounded-xl justify-center items-center bg-gray-50 my-2 px-3 shadow-md max-h-24">
-      <Text className="text-gray-500 text-sm mb-3">{label}</Text>
+    <View className="flex-1 min-w-[40vw] rounded-xl justify-center items-center bg-gray-50 mb-3 px-3 shadow-xl max-h-24">
+      <Text className="text-gray-500 text-xs mb-3">{label}</Text>
       <Text className="text-lg">{value}</Text>
     </View>
   );
